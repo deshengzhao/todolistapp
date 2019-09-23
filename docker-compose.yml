@@ -1,18 +1,20 @@
 version: "2"
 services:
-  practice_docker: 
-    image: zhaodesheng/todolistmvc
+  backend:
+    build: server
     ports: 
       - 3001:3000
-    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; npm start'
-    depends_on:
-      - db
-    environment:
-      - DATABASE_URL=postgres://postgres:password@db:5432/todolistapp
-      - PORT=3000   
-  db:
-    image: postgres
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=todolistapp
+    container_name: backend-container
+    restart: always
+
+  database:
+    build: database
+    container_name: database-container
+    restart: always
+
+  frontend:
+    build: app
+    ports: 
+      - 8080:8080
+    container_name: frontend-container
+    restart: always
