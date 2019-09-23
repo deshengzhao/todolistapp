@@ -3,18 +3,29 @@ services:
   backend:
     build: server
     ports: 
-      - 3001:3000
+      - "3001:3001"
     container_name: backend-container
     restart: always
+    environment:
+      - DATABASE_URL=todolistapp_database://postgres:password@database:5432/todolistapp
+      - PORT=3001  
+    depends_on:
+      - database
 
   database:
     build: database
+    ports: 
+      - "5432:5432"
     container_name: database-container
     restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=todolistapp
 
   frontend:
     build: app
     ports: 
-      - 8080:8080
+      - "4200:4200"
     container_name: frontend-container
     restart: always

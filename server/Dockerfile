@@ -1,7 +1,8 @@
-FROM node
-RUN mkdir -p /todolistapp_docker/server
-ADD . /todolistapp_docker/server
-WORKDIR /todolistapp_docker/server
-RUN npm i
+FROM node:10
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY package.json /usr/src/app
+RUN npm install
+COPY . /usr/src/app
 EXPOSE 3001
 CMD ["node", "index.js"]
